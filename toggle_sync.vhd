@@ -68,17 +68,6 @@ begin
 		end if;
 	end process;
 
-	---- sync the reset to emmc_clk_sel
-	--vari_clk : process(emmc_clk_s) is 
-	--begin
-	--	if rising_edge(emmc_clk_s) then
-	--		if emmc_clk_locked = '0' then  
-	--			hw_rst_wt_cmpl <= '0';
-	--		else
-	--			hw_rst_wt_cmpl <= rst_wt_complete_int;
-	--		end if;
-	--	end if;
-	--end process;
 end architecture rtl;
 
 

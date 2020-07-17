@@ -1,3 +1,4 @@
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 --   ____ ___   __    _               
 --  / __// o |,'_/  .' \              
 -- / _/ / _,'/ /_n / o /   _   __  _    ___  _   _  __
@@ -5,11 +6,16 @@
 --                       / \,' // o /_\ `./ o // || / 
 --                      /_/ /_//_n_//___,'|_,'/_/|_/ 
 -- 
--- For when clocks are asynchronous to each other but events last multiple clocks
--- in the clock domain being synched to.
--- Often used to combat metastability.
--- If you can't verify on a vhdl-2008 platform then use alternative for generate statement
--- 
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Author      : Wesley Taylor-Rendal (WTR)
+-- Syntax      : VHDL-2008
+-- Description : x Flip Flop synchroniser circuit is used to combat
+--             : metastability. Read README.md for detailed explaination.
+--             : Generics explained => 
+--             :    Pre-reg is used to sample on source clock
+--             :    re_edge is used to capture on rising or falling edge
+--             :    sync_size determines how many ff in the source domain are required.
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 library ieee;
 use ieee.std_logic_1164.all;

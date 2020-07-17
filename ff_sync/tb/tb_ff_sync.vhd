@@ -1,3 +1,4 @@
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 --    ____ ___   __    _               
 --   / __// o |,'_/  .' \              
 --  / _/ / _,'/ /_n / o /   _   __  _    ___  _   _  __
@@ -6,12 +7,14 @@
 --                       /_/ /_//_n_//___,'|_,'/_/|_/ 
 -- 
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- Author      : Wesley Taylor-Rendal (WTR)
+-- Syntax      : VHDL-2008
 -- Description : Testbench of ff_sync
---             : 1. From slower/same clk domain to faster clk domain.
+--             : 1. From slower/same src clk domain to dest clk domain.
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 library ieee;
 use	ieee.std_logic_1164.all;
-library cdc_sync_lib;
+library cdc_lib;
 
 entity tb_ff_sync is
 end entity tb_ff_sync;
@@ -29,7 +32,7 @@ architecture tb of tb_ff_sync is
 begin
 
 
-    uut2 : entity cdc_sync_lib.ff_sync 
+    uut : entity cdc_lib.ff_sync 
     generic map
     (
         pre_reg   => true,

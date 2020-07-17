@@ -14,76 +14,67 @@
 --             : Generics explained => 
 --             :    re_edge is used to capture on rising or falling edge
 --             :    sync_size determines how many ff in the source domain are required.
+--             : N.B Place edge_detector after to propagate a pulse in dest.
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---------------------------------------------------------------------------------
---
--- For when instances where clk a is fast and sig a changes faster than
--- clk_b 's rate.
---
 library ieee;
 use	ieee.std_logic_1164.all;
 
 entity toggle_sync is
-	generic(
-		       re_edge   : boolean := true;
-		       sync_size : integer := 3;
-		       vec_size  : integer
-	       );
-	port (
-		     clk_a : in  std_logic;
-		     sig_a : in  std_logic_vector(vec_size-1 downto 0);
-		     clk_b : in  std_logic;
-		     sig_b : out std_logic_vector(vec_size-1 downto 0)
-	     );
+    generic
+    (
+        re_edge   : boolean := true;
+        sync_size : integer := 3
+    );
+    port 
+    (
+        clk_a : in  std_logic;
+        sig_a : in  std_logic;
+        clk_b : in  std_logic;
+        sig_b : out std_logic
+    );
 end entity toggle_sync;
 
 architecture rtl of toggle_sync is
 
 
-	signal fast_event  : std_logic_vector(vec_size-1 downto 0);
---	signal slow_event  : std_logic_vector(vec_size-1 downto 0);	
-	signal q           : std_logic_vector(vec_size-1 downto 0) := (others => '0');
-	type sig_b_array_t is array (sync_size-1 downto 0) of std_logic_vector(sig_b'range);
-	signal capture_reg : sig_b_array_t;
+    signal fast_event  : std_logic;
+    signal q           : std_logic := '0';
+
+    type sig_b_array_t is array (sync_size-1 downto 0) of std_logic;
+    signal capture_reg : std_logic_vector(sync_size-1 downto 0);
+
 begin
 
-	-- Combinational logic
-	A1: for i in sig_a'range generate
-		fast_event(i) <= not q(i) when sig_a(i)='1' else q(i);
-	end generate A1;
+    -- Combinational logic
+    fast_event <= not q when sig_a='1' else q;
 
-	B1: for i in sig_b'range generate
-		sig_b(i) <= capture_reg(sync_size-1)(i) xor capture_reg(sync_size-2)(i);
-	end generate B1;
+    sig_b <= capture_reg(sync_size-1) xor capture_reg(sync_size-2);
 
-	-- Detect toggle
-	fast_clk : process (clk_a) is
-	begin
-		if re_edge then 
-			if rising_edge(clk_a) then
-				q <= fast_event;
-			end if;
-		else
-			if falling_edge(clk_a) then
-				q <= fast_event;
-			end if;
-		end if;
+    -- Detect toggle
+    fast_clk : process (clk_a) is
+    begin
+        if re_edge then 
+            if rising_edge(clk_a) then
+                q <= fast_event;
+            end if;
+        else
+            if falling_edge(clk_a) then
+                q <= fast_event;
+            end if;
+        end if;
+    end process;
 
-	end process;
-
-	-- Sync the toggle to 400k domain;
-	slow_clk : process(clk_b) is
-	begin
-		if re_edge then
-			if rising_edge(clk_b) then
-				capture_reg <= capture_reg(sync_size-2 downto 0) & q;
-			end if;
-		else
-			if falling_edge(clk_b) then
-				capture_reg <= capture_reg(sync_size-2 downto 0) & q;
-			end if;
-
-		end if;
-	end process;
+    slow_clk : process(clk_b) is
+    begin
+        if re_edge then
+            if rising_edge(clk_b) then
+                capture_reg <= capture_reg(sync_size-2 downto 0) & q;
+            end if;
+        else
+            if falling_edge(clk_b) then
+                capture_reg <= capture_reg(sync_size-2 downto 0) & q;
+            end if;
+        end if;
+    end process;
 
 end architecture rtl;

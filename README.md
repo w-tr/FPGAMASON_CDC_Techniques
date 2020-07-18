@@ -16,11 +16,12 @@ Markdown information attained from [here](https://www.markdownguide.org/cheat-sh
 -   ~~work~~
 
 ## Tasklist
-- [x] ff sync
-- [x] toggle sync
-- [ ] handshake based pulse sync
-- [ ] gray code for multibit pointers/counters
-- [ ] Handshake synchroniser
+- [x] FF Synchroniser
+- [x] Toggle Synchroniser
+- [x] Handshake Based Pulse Synchroniser
+- [ ] Gray Code for multibit pointers/counters
+- [ ] Mux Synchroniser
+- [ ] Handshake Synchroniser
 - [ ] Asynchronous Fifo Synchroniser
 eof
 
